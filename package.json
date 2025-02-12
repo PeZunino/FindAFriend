@@ -1,0 +1,44 @@
+{
+  "name": "findafriend",
+  "version": "1.0.0",
+  "description": "FindAFriend API - Challange NodeJS:  API para a adoção de animais, utilizando SOLID e testes.",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build",
+    "database:start": "docker compose up -d",
+    "database:stop": "docker compose stop",
+    "database:delete": "docker compose down",
+    "database:migrate": "npx prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeZunino/FindAFriend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PeZunino/FindAFriend/issues"
+  },
+  "homepage": "https://github.com/PeZunino/FindAFriend#readme",
+  "devDependencies": {
+    "@eslint/js": "9.20.0",
+    "@stylistic/eslint-plugin": "3.1.0",
+    "@types/node": "22.13.1",
+    "eslint": "9.20.1",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "globals": "15.14.0",
+    "prisma": "6.3.1",
+    "tsup": "8.3.6",
+    "tsx": "4.19.2",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.24.0"
+  },
+  "dependencies": {
+    "@prisma/client": "6.3.1",
+    "fastify": "5.2.1"
+  }
+}
