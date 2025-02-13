@@ -1,5 +1,5 @@
-import { OrganizationsRepository } from '../repositories/organizations-repository';
-import { EmailAlreadyInUseError } from './erros/email-already-in-use';
+import { OrganizationsRepository } from '@/repositories/organizations-repository';
+import { EmailAlreadyInUseError } from './errors/email-already-in-use';
 
 interface CreateOrganizationServiceRequest{
 	name :string

@@ -1,6 +1,6 @@
-import { OrganizationsRepository } from '../repositories/organizations-repository';
-import { PetsRepository } from '../repositories/pets-repository';
-import { OrganizationNotFoundError } from './erros/organization-not-found';
+import { OrganizationsRepository } from '@/repositories/organizations-repository';
+import { PetsRepository } from '@/repositories/pets-repository';
+import { OrganizationNotFoundError } from './errors/organization-not-found';
 
 
 interface CreatePetServiceRequest{

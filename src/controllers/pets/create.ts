@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { OrganizationNotFoundError } from '../../services/erros/organization-not-found';
-import { makeCreatePetService } from '../../services/factories/make-create-pet';
+import { OrganizationNotFoundError } from '@/services/errors/organization-not-found';
+import { makeCreatePetService } from '@/services/factories/make-create-pet';
 
 export async function create(request:FastifyRequest, response:FastifyReply){
 	const createPetBodySchema = z.object({

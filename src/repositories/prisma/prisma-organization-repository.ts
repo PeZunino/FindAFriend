@@ -1,6 +1,7 @@
 import { Organization, Prisma } from '@prisma/client';
-import { prisma } from '../../lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { OrganizationsRepository } from '../organizations-repository';
+
 
 export class PrismaOrganizationsRepository implements OrganizationsRepository{
 	async findById(id: string): Promise<Organization | null> {

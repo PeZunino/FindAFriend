@@ -1,4 +1,4 @@
-import { PrismaOrganizationsRepository } from '../../repositories/prisma/prisma-organization-repository';
+import { PrismaOrganizationsRepository } from '@/repositories/prisma/prisma-organization-repository';
 import { CreateOrganizationService } from '../create-organization.service';
 
 export function makeCreateOrganizationService(){

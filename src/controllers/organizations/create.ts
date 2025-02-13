@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { EmailAlreadyInUseError } from '../../services/erros/email-already-in-use';
+import { EmailAlreadyInUseError } from '../../services/errors/email-already-in-use';
 import { makeCreateOrganizationService } from '../../services/factories/make-create-organization-service';
 
 export async function create(request:FastifyRequest, response:FastifyReply){
