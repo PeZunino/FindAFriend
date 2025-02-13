@@ -18,8 +18,8 @@ model Pet {
 
   name       String
   birthDate  DateTime
-  created_at DateTime @default(now())
-  updated_at DateTime
+  created_at DateTime  @default(now())
+  updated_at DateTime?
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
