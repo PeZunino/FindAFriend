@@ -1,11 +1,12 @@
+import { hash } from 'bcryptjs';
 import { OrganizationsRepository } from '@/repositories/organizations-repository';
 import { EmailAlreadyInUseError } from './errors/email-already-in-use';
 
-interface CreateOrganizationServiceRequest{
+interface RegisterOrganizationServiceRequest{
 	name :string
 	responsible :string
 	email :string 
-	password_hash :string
+	password :string
 	city :string
 	state :string
 	cep :string
@@ -14,10 +15,10 @@ interface CreateOrganizationServiceRequest{
 	phone :string
 }
 
-export class CreateOrganizationService{
+export class RegisterOrganizationService{
 	constructor(private organizationRepository:OrganizationsRepository){}
 
-	async execute(data:CreateOrganizationServiceRequest){
+	async execute(data:RegisterOrganizationServiceRequest){
 
 		const emailAlreadyInUser = await this.organizationRepository.findByEmail(data.email);
 
@@ -25,8 +26,13 @@ export class CreateOrganizationService{
 			throw new EmailAlreadyInUseError();
 		}
 
-		const organization = await this.organizationRepository.create(data);
+		const password_hash = await hash(data.password,6);
 
-		return organization;
+		const organization = await this.organizationRepository.create({
+			password_hash,
+			...data
+		});
+
+		return {organization};
 	}
 }

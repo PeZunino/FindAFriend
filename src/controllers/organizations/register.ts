@@ -1,15 +1,15 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+import { makeRegisterOrganizationService } from '@/services/factories/make-register-organization-service';
 import { EmailAlreadyInUseError } from '../../services/errors/email-already-in-use';
-import { makeCreateOrganizationService } from '../../services/factories/make-create-organization-service';
 
-export async function create(request:FastifyRequest, response:FastifyReply){
+export async function register(request:FastifyRequest, response:FastifyReply){
 	const createOrganizationBodySchema = z.object({
 		name :z.string(),
 		responsible :z.string(),
 		email :z.string()
 			.email(), 
-		password_hash :z.string()
+		password :z.string()
 			.min(6),
 		city :z.string(),
 		state :z.string(),
@@ -23,7 +23,7 @@ export async function create(request:FastifyRequest, response:FastifyReply){
 
 	try{
 
-		const createOrganizationService = makeCreateOrganizationService();
+		const createOrganizationService = makeRegisterOrganizationService();
 		
 		createOrganizationService.execute(data);
 	}catch(err){
