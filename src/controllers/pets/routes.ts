@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
-import { create } from './create';
+import { register } from './register';
 
 export async function petsRoutes(app:FastifyInstance){
-	app.post('/',create);
+	app.post('/',register);
 }

@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { OrganizationNotFoundError } from '@/services/errors/organization-not-found';
-import { makeCreatePetService } from '@/services/factories/make-create-pet';
+import { makeRegisterPetService } from '@/services/factories/make-register-pet';
 
-export async function create(request:FastifyRequest, response:FastifyReply){
+export async function register(request:FastifyRequest, response:FastifyReply){
 	const createPetBodySchema = z.object({
 		name: z.string(),
 		birthDate: z.date(),
@@ -13,9 +13,9 @@ export async function create(request:FastifyRequest, response:FastifyReply){
 	const data = createPetBodySchema.parse(request.body);
 
 	try{
-		const createPetService = makeCreatePetService();
+		const registerPetService = makeRegisterPetService();
 
-		await createPetService.execute(data);
+		await registerPetService.execute(data);
 
 	}catch(err){
 		if(err instanceof OrganizationNotFoundError){

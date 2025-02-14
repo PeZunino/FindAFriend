@@ -1,14 +1,14 @@
 import { PrismaOrganizationsRepository } from '@/repositories/prisma/prisma-organization-repository';
 import { PrismaPetsRepository } from '@/repositories/prisma/prisma-pets-repository';
-import CreatePetService from '../create-pet.service';
+import RegisterPetService from '../register-pet.service';
 
 
-export function makeCreatePetService(){
+export function makeRegisterPetService(){
 	const prismaPetsRepository = new PrismaPetsRepository();
   
 	const prismaOrganizationRepository = new PrismaOrganizationsRepository();
   
-	const createPetService = new CreatePetService(prismaOrganizationRepository,prismaPetsRepository);
+	const registerPetService = new RegisterPetService(prismaOrganizationRepository,prismaPetsRepository);
   
-	return createPetService;
+	return registerPetService;
 }
