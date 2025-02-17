@@ -33,5 +33,9 @@ export class InMemoryOrganizationRepository implements OrganizationsRepository{
     
 		return organization ?? null;
 	}
-
+	async findByCity(city: string): Promise<Organization[]> {
+		const organization = this.items.filter(item=>item.city == city);
+    
+		return organization;
+	}
 }

@@ -3,6 +3,7 @@ import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memo
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository';
 import { OrganizationsRepository } from '@/repositories/organizations-repository';
 import { PetsRepository } from '@/repositories/pets-repository';
+import { OrganizationNotFoundError } from './errors/organization-not-found';
 import { RegisterOrganizationService } from './register-organization.service';
 import RegisterPetService from './register-pet.service';
 
@@ -23,7 +24,17 @@ describe('Register Pet Service',()=>{
 		
 	});
 	
-	it('it should be able to register a pet', async()=>{
+	it('should not be able to register a pet in a non registered organization', async()=>{
+
+		await expect(sut.execute({
+			birthDate: new Date(),
+			name:'Little Doe',
+			organizationId:'123'
+		}))
+			.rejects.toBeInstanceOf(OrganizationNotFoundError);
+	});
+
+	it('should be able to register a pet', async()=>{
 
 		const registerOrganizationService = new RegisterOrganizationService(organizationsRepository);
 

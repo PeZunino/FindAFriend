@@ -20,8 +20,6 @@ export class RegisterOrganizationService{
 
 	async execute(data:RegisterOrganizationServiceRequest){
 
-		console.log(this.organizationsRepository);
-
 		const emailAlreadyInUser = await this.organizationsRepository.findByEmail(data.email);
 
 		if(emailAlreadyInUser){
