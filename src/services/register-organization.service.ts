@@ -16,11 +16,13 @@ interface RegisterOrganizationServiceRequest{
 }
 
 export class RegisterOrganizationService{
-	constructor(private organizationRepository:OrganizationsRepository){}
+	constructor(private organizationsRepository:OrganizationsRepository){}
 
 	async execute(data:RegisterOrganizationServiceRequest){
 
-		const emailAlreadyInUser = await this.organizationRepository.findByEmail(data.email);
+		console.log(this.organizationsRepository);
+
+		const emailAlreadyInUser = await this.organizationsRepository.findByEmail(data.email);
 
 		if(emailAlreadyInUser){
 			throw new EmailAlreadyInUseError();
@@ -28,7 +30,7 @@ export class RegisterOrganizationService{
 
 		const password_hash = await hash(data.password,6);
 
-		const organization = await this.organizationRepository.create({
+		const organization = await this.organizationsRepository.create({
 			password_hash,
 			...data
 		});

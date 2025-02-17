@@ -12,17 +12,22 @@ interface RegisterPetServiceRequest{
 export default class RegisterPetService{
 
 	constructor(
-		private organizationRepository: OrganizationsRepository,
+		private organizationsRepository: OrganizationsRepository,
 		private petsRepository:PetsRepository
 	){}
 
 	async execute(data:RegisterPetServiceRequest){
-		const organization = await this.organizationRepository.findById(data.organizationId);
+		const organization = await this.organizationsRepository.findById(data.organizationId);
 
 		if(!organization){
 			throw new OrganizationNotFoundError();
 		}
 
-		await this.petsRepository.create(data);
+		
+		const pet = await this.petsRepository.create(data);
+		
+		console.log('Here',pet);
+
+		return {pet};
 	}
 }
