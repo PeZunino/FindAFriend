@@ -34,6 +34,7 @@ model Pet {
   updated_at   DateTime?
   size         PetSize
   energy_level PetEnergyLevel
+  adopted      Boolean        @default(true)
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
