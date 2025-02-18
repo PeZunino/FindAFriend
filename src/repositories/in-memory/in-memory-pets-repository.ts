@@ -11,17 +11,17 @@ export class InMemoryPetsRepository implements PetsRepository{
 	constructor(private organizationsRepository:InMemoryOrganizationRepository){}
 	
 	async findAll({
-		city,energyLevel,size,age
+		city,energyLevel,size,age,adopted
 	}:FindAllParams): Promise<Pet[]> {
 	
 
 		const organizationByCityList = this.organizationsRepository.items.filter(item=>item.city == city);
 
-		const petListCity = this.items.filter(pet=>organizationByCityList.some(organization=>organization.id == pet.organizationId));
+		const petList = this.items.filter(pet=>organizationByCityList.some(organization=>organization.id == pet.organizationId))
+			.filter(pet=>size ? pet.size == size : true)
+			.filter(pet=>pet.adopted == (adopted ?? true))
+			.filter(pet=>energyLevel ? pet.energy_level == energyLevel : true);
 
-		const petListSize = petListCity.filter(pet=>size ? pet.size == size : true);
-
-		const petList = petListSize.filter(pet=>energyLevel ? pet.energy_level == energyLevel : true);
 
 		if(age){
 			const {
@@ -41,13 +41,15 @@ export class InMemoryPetsRepository implements PetsRepository{
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
 		const pet = {
 			birthDate: data.birthDate,
-			created_at: data.created_at,
+			created_at: data.created_at ?? new Date(),
 			id: data.id ?? randomUUID(),
 			name: data.name,
 			organizationId: data.organizationId,
 			updated_at:data.updated_at,
 			size: data.size,
-			energy_level: data.energy_level
+			energy_level: data.energy_level,
+			adopted: data.adopted ?? true
+
 		} as Pet;
 	
 		this.items.push(pet);

@@ -66,6 +66,61 @@ describe('List Pets Service',async()=>{
 			]);
 	});
 
+	it('should be able to list pets by adoption status', async()=>{
+		const organization = await organizationsRepository.create({
+			name: 'JSPet Org',
+			cep: '99999999',
+			city: 'Itajaí',
+			email: 'johndoe@example.com',
+			neighborhood: 'Fazenda',
+			password_hash: '123456',
+			phone: '99999999999',
+			responsible: 'John Doe',
+			state: 'Santa Catarina',
+			street: 'Onze de Junho',
+		});
+
+		await petsRepository.create({
+			id: 'pet-1',
+			birthDate: dayjs()
+				.subtract(1, 'year')
+				.toDate(),
+			name:'Little Doe',
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM,
+			adopted:false
+		});
+
+		await petsRepository.create({
+			id: 'pet-2',
+			birthDate: dayjs()
+				.subtract(2, 'year')
+				.toDate(),
+			name:'Little Doe II',
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.MEDIUM,
+			size: $Enums.PetSize.SMALL
+		});
+
+
+		const petsBySize = await sut.execute({
+			city: 'Itajaí',
+			adopted:false
+		});
+
+
+		expect(petsBySize.petList)
+			.toHaveLength(1);
+
+		expect(petsBySize.petList)
+			.toEqual([
+				expect.objectContaining({id:'pet-1'}),
+			]);
+
+
+	});
+
 	it('should be able to list pets by age', async()=>{
 		const organization = await organizationsRepository.create({
 			name: 'JSPet Org',

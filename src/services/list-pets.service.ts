@@ -5,6 +5,7 @@ interface ListPetsRequest{
 	size?:string,
 	energyLevel?:string
 	age?: number
+	adopted?:boolean
 }
 
 export class ListPetsService{
