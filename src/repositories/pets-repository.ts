@@ -1,7 +1,14 @@
 import { Pet, Prisma } from '@prisma/client';
 
+export interface FindAllParams{
+	city:string,
+	size?:string,
+	energyLevel?:string
+	age?:number
+}
+
 export interface PetsRepository{
 	create(data:Prisma.PetUncheckedCreateInput):Promise<Pet>
 
-	findByCity(city: string): Promise<Pet[]>
+	findAll(data: FindAllParams): Promise<Pet[]>
 }

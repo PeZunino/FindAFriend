@@ -18,8 +18,6 @@ export default class RegisterPetService{
 		
 		const pet = await this.petsRepository.create(data);
 		
-		console.log('Here',pet);
-
 		return {pet};
 	}
 }

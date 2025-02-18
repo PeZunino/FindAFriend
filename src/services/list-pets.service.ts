@@ -1,12 +1,20 @@
 import { PetsRepository } from '@/repositories/pets-repository';
 
+interface ListPetsRequest{
+	city:string,
+	size?:string,
+	energyLevel?:string
+	age?: number
+}
+
 export class ListPetsService{
 	constructor(
-		private petsRepository:PetsRepository){}
+		private petsRepository:PetsRepository
+	){}
 
-	async execute(city:string){
+	async execute(data:ListPetsRequest){
 
-		const petList = await this.petsRepository.findByCity(city);
+		const petList = await this.petsRepository.findAll(data);
 
 		return {petList};
 	}
