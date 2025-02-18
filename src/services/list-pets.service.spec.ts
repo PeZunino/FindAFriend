@@ -1,4 +1,4 @@
-import { $Enums } from '@prisma/client';
+import { $Enums, Organization } from '@prisma/client';
 import dayjs from 'dayjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
@@ -11,6 +11,8 @@ let petsRepository: InMemoryPetsRepository;
 
 let sut: ListPetsService;
 
+let organization: Organization;
+
 describe('List Pets Service',async()=>{
 
 	beforeEach(async()=>{
@@ -19,10 +21,22 @@ describe('List Pets Service',async()=>{
 		petsRepository = new InMemoryPetsRepository(organizationsRepository);
     
 		sut = new ListPetsService(petsRepository);
+
+		organization = await organizationsRepository.create({
+			name: 'JSPet Org',
+			cep: '99999999',
+			city: 'Itajaí',
+			email: 'johndoe@example.com',
+			neighborhood: 'Fazenda',
+			password_hash: '123456',
+			phone: '99999999999',
+			responsible: 'John Doe',
+			state: 'Santa Catarina',
+			street: 'Onze de Junho',
+		});
 	});
 
-	it('should be able to list all pets from a specify city', async()=>{
-
+	it('should be able to list pets by age', async()=>{
 		const organization = await organizationsRepository.create({
 			name: 'JSPet Org',
 			cep: '99999999',
@@ -35,6 +49,48 @@ describe('List Pets Service',async()=>{
 			state: 'Santa Catarina',
 			street: 'Onze de Junho',
 		});
+
+		await petsRepository.create({
+			id: 'pet-1',
+			birthDate: dayjs()
+				.subtract(1, 'year')
+				.toDate(),
+			name:'Little Doe',
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM,
+		});
+
+		await petsRepository.create({
+			id: 'pet-2',
+			birthDate: dayjs()
+				.subtract(2, 'year')
+				.toDate(),
+			name:'Little Doe II',
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.MEDIUM,
+			size: $Enums.PetSize.SMALL
+		});
+
+
+		const {petList} = await sut.execute({
+			city: 'Itajaí',
+			age: 2
+		});
+
+
+		expect(petList)
+			.toHaveLength(1);
+
+		expect(petList)
+			.toEqual([
+				expect.objectContaining({id:'pet-2'}),
+			]);
+
+
+	});
+
+	it('should be able to list all pets from a specify city', async()=>{
 
 		await petsRepository.create({
 			id: 'pet-1',
@@ -116,60 +172,6 @@ describe('List Pets Service',async()=>{
 		expect(petsBySize.petList)
 			.toEqual([
 				expect.objectContaining({id:'pet-1'}),
-			]);
-
-
-	});
-
-	it('should be able to list pets by age', async()=>{
-		const organization = await organizationsRepository.create({
-			name: 'JSPet Org',
-			cep: '99999999',
-			city: 'Itajaí',
-			email: 'johndoe@example.com',
-			neighborhood: 'Fazenda',
-			password_hash: '123456',
-			phone: '99999999999',
-			responsible: 'John Doe',
-			state: 'Santa Catarina',
-			street: 'Onze de Junho',
-		});
-
-		await petsRepository.create({
-			id: 'pet-1',
-			birthDate: dayjs()
-				.subtract(1, 'year')
-				.toDate(),
-			name:'Little Doe',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
-			size: $Enums.PetSize.MEDIUM,
-		});
-
-		await petsRepository.create({
-			id: 'pet-2',
-			birthDate: dayjs()
-				.subtract(2, 'year')
-				.toDate(),
-			name:'Little Doe II',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.MEDIUM,
-			size: $Enums.PetSize.SMALL
-		});
-
-
-		const petsBySize = await sut.execute({
-			city: 'Itajaí',
-			age: 2
-		});
-
-
-		expect(petsBySize.petList)
-			.toHaveLength(1);
-
-		expect(petsBySize.petList)
-			.toEqual([
-				expect.objectContaining({id:'pet-2'}),
 			]);
 
 
