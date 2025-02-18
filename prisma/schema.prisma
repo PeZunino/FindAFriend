@@ -13,13 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PetSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum PetEnergyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model Pet {
   id String @id @default(uuid())
 
-  name       String
-  birthDate  DateTime
-  created_at DateTime  @default(now())
-  updated_at DateTime?
+  name         String
+  birthDate    DateTime
+  created_at   DateTime       @default(now())
+  updated_at   DateTime?
+  size         PetSize
+  energy_level PetEnergyLevel
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
