@@ -32,11 +32,4 @@ export class InMemoryPetsRepository implements PetsRepository{
 		return pet;
 	}
 
-	async filterByOrganizationId(organizationId: string): Promise<Pet[]> {
-		const organization = this.items.filter(item=>item.organizationId == organizationId);
-
-		return organization;
-	}
-  
-
 }
