@@ -12,4 +12,7 @@ export interface PetsRepository{
 	create(data:Prisma.PetUncheckedCreateInput):Promise<Pet>
 
 	findAll(data: FindAllParams): Promise<Pet[]>
+	
+	findById(id:string): Promise<Pet | null>
+
 }

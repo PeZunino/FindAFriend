@@ -10,6 +10,12 @@ export class InMemoryPetsRepository implements PetsRepository{
 	
 	constructor(private organizationsRepository:InMemoryOrganizationRepository){}
 	
+	async findById(id: string): Promise<Pet | null> {
+		const pet = this.items.find(item=>item.id == id);
+	
+		return pet ?? null;
+	}
+	
 	async findAll({
 		city,energyLevel,size,age,adopted
 	}:FindAllParams): Promise<Pet[]> {
@@ -17,25 +23,27 @@ export class InMemoryPetsRepository implements PetsRepository{
 
 		const organizationByCityList = this.organizationsRepository.items.filter(item=>item.city == city);
 
-		const petList = this.items.filter(pet=>organizationByCityList.some(organization=>organization.id == pet.organizationId))
-			.filter(pet=>size ? pet.size == size : true)
-			.filter(pet=>pet.adopted == (adopted ?? true))
-			.filter(pet=>energyLevel ? pet.energy_level == energyLevel : true);
+		const petListCity = this.items.filter(pet=>organizationByCityList.some(organization=>organization.id == pet.organizationId))
 
+			.filter(pet=>size ? pet.size == size : true)
+
+			.filter(pet=>pet.adopted == (adopted ?? true))
+
+			.filter(pet=>energyLevel ? pet.energy_level == energyLevel : true);
 
 		if(age){
 			const {
 				maxDate,minDate
 			} = getMaxMinDateToAge(age);
 
-			return petList.filter(pet=>{
+			return petListCity.filter(pet=>{
 				const birthDate = dayjs(pet.birthDate);
 
 				return birthDate.isAfter(minDate) && birthDate.isBefore(maxDate);
 			});
 		}
 
-		return petList;
+		return petListCity;
 	}
 	
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
