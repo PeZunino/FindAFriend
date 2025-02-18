@@ -48,6 +48,38 @@ describe('Create organization Service',()=>{
 		).rejects.toBeInstanceOf(EmailAlreadyInUseError);
 	});
 
+	it('should not be able to register with a phone already in use', async()=>{
+		const phone = '99999999999';
+
+		await sut.execute({
+			name: 'JSPet Org',
+			cep: '99999999',
+			city: 'Itajaí',
+			email:'johndoe@example.com',
+			neighborhood: 'Fazenda',
+			password: '123456',
+			phone,
+			responsible: 'John Doe',
+			state: 'Santa Catarina',
+			street: 'Onze de Junho'
+		});
+
+		await expect(()=>
+			sut.execute({
+				name: 'JSPet Org',
+				cep: '99999999',
+				city: 'Itajaí',
+				email:'johndoe@example.com',
+				neighborhood: 'Fazenda',
+				password: '123456',
+				phone,
+				responsible: 'John Doe',
+				state: 'Santa Catarina',
+				street: 'Onze de Junho'
+			})
+		).rejects.toBeInstanceOf(EmailAlreadyInUseError);
+	});
+
 	it('should hash organization password', async()=>{
 		const password = '123456';
 

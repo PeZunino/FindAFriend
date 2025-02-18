@@ -2,6 +2,7 @@ import { Organization,Prisma } from '@prisma/client';
 import { OrganizationsRepository } from '../organizations-repository';
 
 export class InMemoryOrganizationRepository implements OrganizationsRepository{
+
 	public items: Organization[] = [];
   
 	async create(data: Prisma.OrganizationCreateInput): Promise<Organization> {
@@ -33,5 +34,9 @@ export class InMemoryOrganizationRepository implements OrganizationsRepository{
     
 		return organization ?? null;
 	}
-
+	async findByPhone(phone: string): Promise<Organization | null> {
+		const organization = this.items.find(item=>item.phone == phone);
+    
+		return organization ?? null;
+	}
 }

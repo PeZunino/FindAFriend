@@ -3,7 +3,7 @@ FindAFriend API - Challange NodeJS:  API para a adoção de animais, utilizando 
 
 # ReqFunc
 - [x] Deve ser possível cadastrar um pet
-- [/] Deve ser possível listar todos os pets disponíveis para adoção em uma cidade
+- [/x Deve ser possível listar todos os pets disponíveis para adoção em uma cidade
 - [x] Deve ser possível filtrar pets por suas características
 - [ ] Deve ser possível visualizar detalhes de um pet para adoção
 - [ ] Deve ser possível se cadastrar como uma ORG

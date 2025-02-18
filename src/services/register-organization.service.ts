@@ -26,6 +26,12 @@ export class RegisterOrganizationService{
 			throw new EmailAlreadyInUseError();
 		}
 
+		const phoneAlreadyInUser = await this.organizationsRepository.findByPhone(data.phone);
+
+		if(phoneAlreadyInUser){
+			throw new EmailAlreadyInUseError();
+		}
+
 		const password_hash = await hash(data.password,6);
 
 		const organization = await this.organizationsRepository.create({
