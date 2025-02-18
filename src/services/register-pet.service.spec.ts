@@ -1,7 +1,7 @@
+import { $Enums } from '@prisma/client';
 import { beforeEach,describe, expect,it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository';
-import { OrganizationsRepository } from '@/repositories/organizations-repository';
 import { PetsRepository } from '@/repositories/pets-repository';
 import { OrganizationNotFoundError } from './errors/organization-not-found';
 import { RegisterOrganizationService } from './register-organization.service';
@@ -9,16 +9,16 @@ import RegisterPetService from './register-pet.service';
 
 let petsRepository:PetsRepository;
 
-let organizationsRepository:OrganizationsRepository;
+let organizationsRepository:InMemoryOrganizationRepository;
 
 let sut: RegisterPetService;
 
 describe('Register Pet Service',()=>{
 
 	beforeEach(()=>{
-		petsRepository = new InMemoryPetsRepository();
-
 		organizationsRepository = new InMemoryOrganizationRepository();
+		
+		petsRepository = new InMemoryPetsRepository(organizationsRepository);
 
 		sut = new RegisterPetService(organizationsRepository,petsRepository);
 		
@@ -29,7 +29,9 @@ describe('Register Pet Service',()=>{
 		await expect(sut.execute({
 			birthDate: new Date(),
 			name:'Little Doe',
-			organizationId:'123'
+			organizationId:'123',
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM
 		}))
 			.rejects.toBeInstanceOf(OrganizationNotFoundError);
 	});
@@ -54,7 +56,9 @@ describe('Register Pet Service',()=>{
 		const {pet} = await sut.execute({
 			birthDate: new Date(),
 			name:'Little Doe',
-			organizationId:organization.id
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM
 		});
 
 		expect(pet.id)

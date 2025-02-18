@@ -1,3 +1,4 @@
+import { $Enums } from '@prisma/client';
 import { describe, expect, it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository';
@@ -28,14 +29,18 @@ describe('List Pets Service',async()=>{
 			id: 'pet-1',
 			birthDate: new Date(),
 			name:'Little Doe',
-			organizationId:organization.id
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM
 		});
 
 		await petsRepository.create({
 			id: 'pet-2',
 			birthDate: new Date(),
 			name:'Little Doe II',
-			organizationId:organization.id
+			organizationId:organization.id,
+			energy_level: $Enums.PetEnergyLevel.HIGH,
+			size: $Enums.PetSize.MEDIUM
 		});
 
 

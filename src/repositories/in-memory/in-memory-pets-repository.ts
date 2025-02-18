@@ -9,6 +9,7 @@ export class InMemoryPetsRepository implements PetsRepository{
 	constructor(private organizationsRepository:InMemoryOrganizationRepository){}
 	
 	async findByCity(city: string): Promise<Pet[]> {
+	
 		const organizationByCityList = this.organizationsRepository.items.filter(item=>item.city == city);
 
 		const petList = this.items.filter(
