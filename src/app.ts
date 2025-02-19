@@ -4,6 +4,6 @@ import { petsRoutes } from './controllers/pets/routes';
 
 export const app = fastify();
 
-app.register(organizationsRoutes,{prefix:'/organizations'});
+app.register(organizationsRoutes);
 
-app.register(petsRoutes,{prefix:'/pets'});
+app.register(petsRoutes);
