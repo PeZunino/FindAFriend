@@ -11,9 +11,14 @@
     "database:stop": "docker compose stop",
     "database:delete": "docker compose down",
     "database:migrate": "npx prisma migrate dev",
-    "test": "vitest run --dir src/services",
-    "test:watch": "vitest --dir src/services",
-    "test:coverage": "vitest run --coverage"
+    "test": "vitest run --dir src/service",
+    "test:watch": "vitest --dir src/service",
+    "test:coverage": "vitest run --coverage",
+    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
+    "test:install-prisma-environment": "npm link vitest-environment-prisma",
+    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
+    "test:e2e": "vitest run --dir src/controllers",
+    "test:e2e:watch": "vitest --dir src/controllers"
   },
   "repository": {
     "type": "git",
@@ -35,9 +40,10 @@
     "eslint": "9.20.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "15.14.0",
+    "npm-run-all": "4.1.5",
     "prisma": "6.3.1",
-    "tsup": "8.3.6",
-    "tsx": "4.19.2",
+    "tsup": "2.0.3",
+    "tsx": "4.19.3",
     "typescript": "5.7.3",
     "typescript-eslint": "8.24.0",
     "vite-tsconfig-paths": "5.1.4",
@@ -47,6 +53,7 @@
     "@prisma/client": "6.3.1",
     "bcryptjs": "3.0.0",
     "dayjs": "1.11.13",
+    "dotenv": "16.4.7",
     "fastify": "5.2.1",
     "zod": "3.24.2"
   }

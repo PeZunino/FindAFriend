@@ -10,7 +10,7 @@ export default defineConfig({
 		coverage: {all: false,},
 		environmentMatchGlobs: [
 			[
-				'src/http/controllers/**', 'prisma'
+				'src/controllers/**', 'prisma'
 			]
 		],
 		dir: 'src', 
