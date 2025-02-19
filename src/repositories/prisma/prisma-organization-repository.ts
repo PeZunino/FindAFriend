@@ -15,6 +15,11 @@ export class PrismaOrganizationsRepository implements OrganizationsRepository{
 
 		return organization;
 	}
+	async findByPhone(phone: string): Promise<Organization | null> {
+		const organization = await prisma.organization.findUnique({where:{phone}});
+
+		return organization;
+	}
 	async create(data:Prisma.OrganizationCreateInput){
 		const organization = await prisma.organization.create({data});
 
