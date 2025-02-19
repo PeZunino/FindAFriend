@@ -21,8 +21,6 @@ export async function register(request:FastifyRequest, response:FastifyReply){
 
 	const data = createOrganizationBodySchema.parse(request.body);
 
-	console.log('data',data);
-
 	try{
 		const createOrganizationService = makeRegisterOrganizationService();
 		

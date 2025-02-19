@@ -12,7 +12,7 @@ describe('Authenticate (e2e)', ()=>{
 	});
 
 	it('should be able to authenticate', async()=>{
-		const responseOrg = await request(app.server)
+		await request(app.server)
 			.post('/organizations')
 			.send({
 				name: 'JSPet Org',
@@ -27,8 +27,6 @@ describe('Authenticate (e2e)', ()=>{
 				phone: '99999999999'
 			});
 		
-		console.log('responseOrg.body',responseOrg.body);
-
 		const response = await request(app.server)
 			.post('/sessions')
 			.send({
