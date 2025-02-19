@@ -35,8 +35,16 @@ export class RegisterOrganizationService{
 		const password_hash = await hash(data.password,6);
 
 		const organization = await this.organizationsRepository.create({
+			name: data.name,
+			responsible: data.responsible,
+			email: data.email,
 			password_hash,
-			...data
+			city: data.city,
+			state: data.state,
+			cep: data.cep,
+			neighborhood: data.neighborhood,
+			street: data.street,
+			phone: data.phone,
 		});
 
 		return {organization};

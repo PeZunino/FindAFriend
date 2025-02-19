@@ -21,10 +21,12 @@ export async function register(request:FastifyRequest, response:FastifyReply){
 
 	const data = createOrganizationBodySchema.parse(request.body);
 
+	console.log('data',data);
+
 	try{
 		const createOrganizationService = makeRegisterOrganizationService();
 		
-		createOrganizationService.execute(data);
+		await createOrganizationService.execute(data);
 	}catch(err){
 		if(err instanceof EmailAlreadyInUseError){
 			return response.status(409)
