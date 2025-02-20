@@ -20,7 +20,7 @@ export class AuthenticateService{
 			throw new InvalidCredentialsError();
 		}
 
-		const passwordMatches = await compare(password, organization.password_hash);
+		const passwordMatches = await compare(password, organization.password);
 	
 		if(!passwordMatches){
 			throw new InvalidCredentialsError();

@@ -1,4 +1,5 @@
-import { $Enums, Organization } from '@prisma/client';
+import { makeOrganization } from 'test/factory/make-organization';
+import { makePet } from 'test/factory/make-pet';
 import { beforeEach, describe,expect,it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository';
@@ -11,8 +12,6 @@ let petsRepository : InMemoryPetsRepository;
 
 let sut : GetPetService;
 
-let organization: Organization;
-
 describe('Get Pet Service', async()=>{
 	
 	beforeEach(async()=>{
@@ -22,34 +21,21 @@ describe('Get Pet Service', async()=>{
     
 		sut = new GetPetService(petsRepository);
 
-		organization = await organizationsRepository.create({
-			name: 'JSPet Org',
-			cep: '99999999',
-			city: 'Itajaí',
-			email: 'johndoe@example.com',
-			neighborhood: 'Fazenda',
-			password_hash: '123456',
-			phone: '99999999999',
-			responsible: 'John Doe',
-			state: 'Santa Catarina',
-			street: 'Onze de Junho',
-		});
 	});
   
 	it('should be able to get pet details by id ', async()=>{
+		const organization = makeOrganization({});
 
-		await petsRepository.create({
-			id: 'pet-1',
-			birthDate: new Date(),
-			name:'Little Doe',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
-			size: $Enums.PetSize.MEDIUM
+		const pet = makePet({
+			id:'pet-1',
+			organizationId:organization.id
 		});
 
-		const {pet} = await sut.execute('pet-1');
+		await petsRepository.create(pet);
 
-		expect(pet)
+		const response = await sut.execute('pet-1');
+
+		expect(response.pet)
 			.toEqual(
 				expect.objectContaining({id:'pet-1'})
 			);

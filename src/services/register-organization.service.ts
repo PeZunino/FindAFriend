@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import { OrganizationsRepository } from '@/repositories/organizations-repository';
 import { EmailAlreadyInUseError } from './errors/email-already-in-use';
+import { PhoneAlreadyInUseError } from './errors/phone-already-in-use copy';
 
 interface RegisterOrganizationServiceRequest{
 	name :string
@@ -29,22 +30,14 @@ export class RegisterOrganizationService{
 		const phoneAlreadyInUser = await this.organizationsRepository.findByPhone(data.phone);
 
 		if(phoneAlreadyInUser){
-			throw new EmailAlreadyInUseError();
+			throw new PhoneAlreadyInUseError();
 		}
 
-		const password_hash = await hash(data.password,6);
+		const passwordHash = await hash(data.password,6);
 
 		const organization = await this.organizationsRepository.create({
-			name: data.name,
-			responsible: data.responsible,
-			email: data.email,
-			password_hash,
-			city: data.city,
-			state: data.state,
-			cep: data.cep,
-			neighborhood: data.neighborhood,
-			street: data.street,
-			phone: data.phone,
+			...data,
+			password: passwordHash
 		});
 
 		return {organization};

@@ -1,5 +1,5 @@
-import { Organization } from '@prisma/client';
 import { hash } from 'bcryptjs';
+import { makeOrganization } from 'test/factory/make-organization';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
 import { AuthenticateService } from './authenticate.service';
@@ -7,36 +7,27 @@ import { InvalidCredentialsError } from './errors/invalid-credentials-error';
 
 let organizationsRepository: InMemoryOrganizationRepository;
 
-let organization:Organization;
-
 let sut:AuthenticateService;
 
 describe('Authenticate Service', async()=>{
 
 	beforeEach(async()=>{
 		organizationsRepository = new InMemoryOrganizationRepository();
-
-		organization = await organizationsRepository.create({
-			name: 'JSPet Org',
-			cep: '99999999',
-			city: 'Itajaí',
-			email: 'johndoe@example.com',
-			neighborhood: 'Fazenda',
-			password_hash: await hash('123456',6),
-			phone: '99999999999',
-			responsible: 'John Doe',
-			state: 'Santa Catarina',
-			street: 'Onze de Junho',
-		});
-   
+		
 		sut = new AuthenticateService(organizationsRepository);
 	});
 
 	it('should be able to authenticate an organization', async()=>{
-		
+		const organization = makeOrganization({});
+
+		await organizationsRepository.create({
+			...organization,
+			password: await hash(organization.password,6)
+		});
+
 		const authenticated = await sut.execute({
 			email: organization.email,
-			password: '123456'
+			password: organization.password
 		});
 
 		expect(authenticated.organization.id)
@@ -45,6 +36,7 @@ describe('Authenticate Service', async()=>{
 	});
 
 	it('should not be able to to authenticate with wrong email', async()=>{
+		const organization = makeOrganization({});
 
 		await expect(()=>
 			sut.execute({
