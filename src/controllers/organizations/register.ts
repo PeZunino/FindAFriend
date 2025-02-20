@@ -24,7 +24,11 @@ export async function register(request:FastifyRequest, response:FastifyReply){
 	try{
 		const createOrganizationService = makeRegisterOrganizationService();
 		
-		await createOrganizationService.execute(data);
+		const {organization} = await createOrganizationService.execute(data);
+
+		return response.status(201)
+			.send({organization});
+			
 	}catch(err){
 		if(err instanceof EmailAlreadyInUseError){
 			return response.status(409)
@@ -34,6 +38,4 @@ export async function register(request:FastifyRequest, response:FastifyReply){
 		throw err;
 	}
 
-	return response.status(201)
-		.send();
 }
