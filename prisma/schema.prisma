@@ -28,13 +28,13 @@ enum PetEnergyLevel {
 model Pet {
   id String @id @default(uuid())
 
-  name         String
-  birthDate    DateTime
-  created_at   DateTime       @default(now())
-  updated_at   DateTime?
-  size         PetSize
-  energy_level PetEnergyLevel
-  adopted      Boolean        @default(true)
+  name        String
+  birthDate   DateTime
+  createdAt   DateTime       @default(now()) @map("create_at")
+  updatedAt   DateTime?      @map("updated_at")
+  size        PetSize
+  energyLevel PetEnergyLevel @map("energy_level")
+  adopted     Boolean        @default(true)
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
