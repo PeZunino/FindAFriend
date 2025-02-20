@@ -1,10 +1,11 @@
+import { $Enums } from '@prisma/client';
 import { PetsRepository } from '@/repositories/pets-repository';
 
 interface ListPetsRequest{
 	city:string,
-	size?:string,
-	energyLevel?:string
-	age?: number
+	size?:$Enums.PetSize
+	energyLevel?:$Enums.PetEnergyLevel
+	age?: string
 	adopted?:boolean
 }
 
