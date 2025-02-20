@@ -17,7 +17,7 @@ describe('Register Pet (e2e)', ()=>{
 		 
 		const createOrganizationResponse = await request(app.server)
 			.post('/organizations')
-			.send(makeOrganization());
+			.send(makeOrganization({}));
 		
 		const {organization} = createOrganizationResponse.body;
 

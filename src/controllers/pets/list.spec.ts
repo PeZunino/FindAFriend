@@ -20,7 +20,7 @@ describe('Register Pet (e2e)', ()=>{
 	beforeEach(async()=>{
 		const createOrganizationResponse = await request(app.server)
 			.post('/organizations')
-			.send(makeOrganization());
+			.send(makeOrganization({}));
   
 		organization = createOrganizationResponse.body.organization ;
 	});
