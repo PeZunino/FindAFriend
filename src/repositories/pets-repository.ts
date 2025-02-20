@@ -1,9 +1,9 @@
-import { Pet, Prisma } from '@prisma/client';
+import { $Enums, Pet, Prisma } from '@prisma/client';
 
 export interface FindAllParams{
 	city:string
-	size?:string
-	energyLevel?:string
+	size?:$Enums.PetSize
+	energyLevel?:$Enums.PetEnergyLevel
 	age?:number
 	adopted?:boolean
 }
