@@ -30,7 +30,7 @@ describe('Register Pet Service',()=>{
 			birthDate: new Date(),
 			name:'Little Doe',
 			organizationId:'123',
-			energy_level: $Enums.PetEnergyLevel.HIGH,
+			energyLevel: $Enums.PetEnergyLevel.HIGH,
 			size: $Enums.PetSize.MEDIUM
 		}))
 			.rejects.toBeInstanceOf(OrganizationNotFoundError);
@@ -57,7 +57,7 @@ describe('Register Pet Service',()=>{
 			birthDate: new Date(),
 			name:'Little Doe',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
+			energyLevel: $Enums.PetEnergyLevel.HIGH,
 			size: $Enums.PetSize.MEDIUM
 		});
 

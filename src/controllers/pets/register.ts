@@ -5,14 +5,15 @@ import { OrganizationNotFoundError } from '@/services/errors/organization-not-fo
 import { makeRegisterPetService } from '@/services/factories/make-register-pet';
 
 export async function register(request:FastifyRequest, response:FastifyReply){
-
+	
 	const createPetBodySchema = z.object({
 		name: z.string(),
 		birthDate: z.string(),
 		organizationId: z.string(),
-		energy_level: z.nativeEnum($Enums.PetEnergyLevel),
+		energyLevel: z.nativeEnum($Enums.PetEnergyLevel),
 		size: z.nativeEnum($Enums.PetSize),
 		adopted: z.boolean()
+			.optional()
 			.default(true),
 	});
 
