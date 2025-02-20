@@ -4,7 +4,7 @@ export interface FindAllParams{
 	city:string
 	size?:$Enums.PetSize
 	energyLevel?:$Enums.PetEnergyLevel
-	age?:number
+	age?:string
 	adopted?:boolean
 }
 

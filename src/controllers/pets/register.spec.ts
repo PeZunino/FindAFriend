@@ -21,7 +21,7 @@ describe('Register Pet (e2e)', ()=>{
 		
 		const {organization} = createOrganizationResponse.body;
 
-		const pet = makePet(organization.id);
+		const pet = makePet({organizationId:organization.id});
 
 		const response = await request(app.server)
 			.post('/pets')

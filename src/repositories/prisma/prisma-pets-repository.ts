@@ -8,6 +8,7 @@ export class PrismaPetsRepository implements PetsRepository{
 	async findAll({
 		city,adopted,age,energyLevel,size
 	}: FindAllParams): Promise<Pet[]> {
+
 		let birthDateFilter = {};
 
 		if (age) {
@@ -25,7 +26,7 @@ export class PrismaPetsRepository implements PetsRepository{
 			where: {
 				birthDate: birthDateFilter,
 				size,
-				energy_level: energyLevel,
+				energyLevel: energyLevel,
 				adopted: adopted ?? true, 
 				organization: {
 					city: {

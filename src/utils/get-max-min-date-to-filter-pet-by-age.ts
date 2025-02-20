@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 
-export function getMaxMinDateToAge(age:number){
+export function getMaxMinDateToAge(rawAge:string){
+
+	const age = parseInt(rawAge);
 
 	const today = dayjs();
   
