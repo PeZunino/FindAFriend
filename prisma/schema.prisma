@@ -45,16 +45,16 @@ model Pet {
 model Organization {
   id String @id @default(uuid())
 
-  name          String
-  responsible   String
-  email         String @unique
-  password_hash String
-  city          String
-  state         String
-  cep           String
-  neighborhood  String
-  street        String
-  phone         String @unique
+  name         String
+  responsible  String
+  email        String @unique
+  password     String
+  city         String
+  state        String
+  cep          String
+  neighborhood String
+  street       String
+  phone        String @unique
 
   pets Pet[]
 
