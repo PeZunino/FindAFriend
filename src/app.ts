@@ -1,9 +1,13 @@
+import fastifyJwt from '@fastify/jwt';
 import fastify from 'fastify';
 import { ZodError } from 'zod';
 import { organizationsRoutes } from './controllers/organizations/routes';
 import { petsRoutes } from './controllers/pets/routes';
+import { env } from './env';
 
 export const app = fastify();
+
+app.register(fastifyJwt,{secret: env.JWT_SECRET});
 
 app.register(organizationsRoutes);
 

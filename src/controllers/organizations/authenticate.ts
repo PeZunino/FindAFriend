@@ -24,8 +24,12 @@ export async function authenticate(request:FastifyRequest, response: FastifyRepl
 			password
 		});
     
+		const token = await response.jwtSign({},{sign:{sub: organization.id}});
+
 		response.status(200)
-			.send({organization});
+			.send({token});
+
+
 	}catch(err){
 		if(err instanceof InvalidCredentialsError){
 			return response.status(400)
