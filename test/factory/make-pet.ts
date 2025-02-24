@@ -7,15 +7,13 @@ interface Pet{
 	id?:string
 }
 
-export function makePet({
-	birthDate,organizationId,id
-}:Pet){
+export function makePet(data?:Pet){
 
 	return {
-		id: id ?? crypto.randomUUID(),
-		birthDate: birthDate ?? faker.date.past(),
+		id: data?.id ?? crypto.randomUUID(),
+		birthDate: data?.birthDate ?? faker.date.past(),
 		name:faker.animal.dog(),
-		organizationId,
+		organizationId: data?.organizationId ?? crypto.randomUUID(),
 		energyLevel:  faker.helpers.arrayElement(Object.values($Enums.PetEnergyLevel)),
 		size: faker.helpers.arrayElement(Object.values($Enums.PetSize)),
 	};

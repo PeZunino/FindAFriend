@@ -1,5 +1,7 @@
 import { $Enums, Organization } from '@prisma/client';
 import dayjs from 'dayjs';
+import { makeOrganization } from 'test/factory/make-organization';
+import { makePet } from 'test/factory/make-pet';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryOrganizationRepository } from '@/repositories/in-memory/in-memory-organizations-repository';
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository';
@@ -22,18 +24,7 @@ describe('List Pets Service',async()=>{
     
 		sut = new ListPetsService(petsRepository);
 
-		organization = await organizationsRepository.create({
-			name: 'JSPet Org',
-			cep: '99999999',
-			city: 'Itajaí',
-			email: 'johndoe@example.com',
-			neighborhood: 'Fazenda',
-			password_hash: '123456',
-			phone: '99999999999',
-			responsible: 'John Doe',
-			state: 'Santa Catarina',
-			street: 'Onze de Junho',
-		});
+		organization = await organizationsRepository.create(makeOrganization());
 	});
 
 	it('should be able to list pets by age', async()=>{
@@ -43,7 +34,7 @@ describe('List Pets Service',async()=>{
 			city: 'Itajaí',
 			email: 'johndoe@example.com',
 			neighborhood: 'Fazenda',
-			password_hash: '123456',
+			password: '123456',
 			phone: '99999999999',
 			responsible: 'John Doe',
 			state: 'Santa Catarina',
@@ -57,7 +48,7 @@ describe('List Pets Service',async()=>{
 				.toDate(),
 			name:'Little Doe',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
+			energyLevel: $Enums.PetEnergyLevel.HIGH,
 			size: $Enums.PetSize.MEDIUM,
 		});
 
@@ -68,14 +59,14 @@ describe('List Pets Service',async()=>{
 				.toDate(),
 			name:'Little Doe II',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.MEDIUM,
+			energyLevel: $Enums.PetEnergyLevel.MEDIUM,
 			size: $Enums.PetSize.SMALL
 		});
 
 
 		const {petList} = await sut.execute({
 			city: 'Itajaí',
-			age: 2
+			age: '2'
 		});
 
 
@@ -92,33 +83,18 @@ describe('List Pets Service',async()=>{
 
 	it('should be able to list all pets from a specify city', async()=>{
 
-		await petsRepository.create({
-			id: 'pet-1',
-			birthDate: new Date(),
-			name:'Little Doe',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
-			size: $Enums.PetSize.MEDIUM
-		});
+		const pet = makePet({organizationId:organization.id});
 
-		await petsRepository.create({
-			id: 'pet-2',
-			birthDate: new Date(),
-			name:'Little Doe II',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
-			size: $Enums.PetSize.MEDIUM,
-		});
+		await petsRepository.create(pet);
 
-		const {petList} = await sut.execute({city: 'Itajaí'});
+		const {petList} = await sut.execute({city: organization.city});
 
 		expect(petList)
-			.toHaveLength(2);
+			.toHaveLength(1);
 
 		expect(petList)
 			.toEqual([
-				expect.objectContaining({id:'pet-1'}),
-				expect.objectContaining({id:'pet-2'})
+				expect.objectContaining({id:pet.id}),
 			]);
 	});
 
@@ -129,7 +105,7 @@ describe('List Pets Service',async()=>{
 			city: 'Itajaí',
 			email: 'johndoe@example.com',
 			neighborhood: 'Fazenda',
-			password_hash: '123456',
+			password: '123456',
 			phone: '99999999999',
 			responsible: 'John Doe',
 			state: 'Santa Catarina',
@@ -143,7 +119,7 @@ describe('List Pets Service',async()=>{
 				.toDate(),
 			name:'Little Doe',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
+			energyLevel: $Enums.PetEnergyLevel.HIGH,
 			size: $Enums.PetSize.MEDIUM,
 			adopted:false
 		});
@@ -155,7 +131,7 @@ describe('List Pets Service',async()=>{
 				.toDate(),
 			name:'Little Doe II',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.MEDIUM,
+			energyLevel: $Enums.PetEnergyLevel.MEDIUM,
 			size: $Enums.PetSize.SMALL
 		});
 
@@ -185,7 +161,7 @@ describe('List Pets Service',async()=>{
 			city: 'Itajaí',
 			email: 'johndoe@example.com',
 			neighborhood: 'Fazenda',
-			password_hash: '123456',
+			password: '123456',
 			phone: '99999999999',
 			responsible: 'John Doe',
 			state: 'Santa Catarina',
@@ -197,7 +173,7 @@ describe('List Pets Service',async()=>{
 			birthDate: new Date(),
 			name:'Little Doe',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
+			energyLevel: $Enums.PetEnergyLevel.HIGH,
 			size: $Enums.PetSize.MEDIUM
 		});
 
@@ -206,7 +182,7 @@ describe('List Pets Service',async()=>{
 			birthDate: new Date(),
 			name:'Little Doe II',
 			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.MEDIUM,
+			energyLevel: $Enums.PetEnergyLevel.MEDIUM,
 			size: $Enums.PetSize.SMALL
 		});
 
@@ -226,41 +202,13 @@ describe('List Pets Service',async()=>{
 	});
 
 	it('should be able to list pets by energy level ', async()=>{
-		
-		const organization = await organizationsRepository.create({
-			name: 'JSPet Org',
-			cep: '99999999',
-			city: 'Itajaí',
-			email: 'johndoe@example.com',
-			neighborhood: 'Fazenda',
-			password_hash: '123456',
-			phone: '99999999999',
-			responsible: 'John Doe',
-			state: 'Santa Catarina',
-			street: 'Onze de Junho',
-		});
+		const pet = makePet({organizationId:organization.id});
 
-		await petsRepository.create({
-			id: 'pet-1',
-			birthDate: new Date(),
-			name:'Little Doe',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.HIGH,
-			size: $Enums.PetSize.MEDIUM
-		});
-
-		await petsRepository.create({
-			id: 'pet-2',
-			birthDate: new Date(),
-			name:'Little Doe II',
-			organizationId:organization.id,
-			energy_level: $Enums.PetEnergyLevel.MEDIUM,
-			size: $Enums.PetSize.SMALL
-		});
+		await petsRepository.create(pet);
 
 		const petsByEnergyLevel = await sut.execute({
-			city: 'Itajaí',
-			energyLevel: $Enums.PetEnergyLevel.HIGH,
+			city: organization.city,
+			energyLevel: pet.energyLevel,
 		});
 
 		expect(petsByEnergyLevel.petList)
@@ -268,7 +216,7 @@ describe('List Pets Service',async()=>{
 
 		expect(petsByEnergyLevel.petList)
 			.toEqual([
-				expect.objectContaining({id:'pet-1'}),
+				expect.objectContaining({id:pet.id}),
 			]);
 	});
 });

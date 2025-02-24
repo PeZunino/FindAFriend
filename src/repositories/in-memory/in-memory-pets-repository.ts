@@ -29,7 +29,7 @@ export class InMemoryPetsRepository implements PetsRepository{
 
 			.filter(pet=>pet.adopted == (adopted ?? true))
 
-			.filter(pet=>energyLevel ? pet.energy_level == energyLevel : true);
+			.filter(pet=>energyLevel ? pet.energyLevel == energyLevel : true);
 
 		if(age){
 			const {
@@ -49,13 +49,13 @@ export class InMemoryPetsRepository implements PetsRepository{
 	async create(data: Prisma.PetUncheckedCreateInput): Promise<Pet> {
 		const pet = {
 			birthDate: data.birthDate,
-			created_at: data.created_at ?? new Date(),
+			createdAt: data.createdAt ?? new Date(),
 			id: data.id ?? randomUUID(),
 			name: data.name,
 			organizationId: data.organizationId,
-			updated_at:data.updated_at,
+			updatedAt:data.updatedAt,
 			size: data.size,
-			energy_level: data.energy_level,
+			energyLevel: data.energyLevel,
 			adopted: data.adopted ?? true
 
 		} as Pet;

@@ -5,9 +5,7 @@ interface Organization {
 	password?:string
 }
 
-export function makeOrganization({
-	phone,password
-}:Organization){
+export function makeOrganization(data?:Organization){
 	return{
 		id: crypto.randomUUID(),
 		name: faker.company.name(),
@@ -15,8 +13,8 @@ export function makeOrganization({
 		city: faker.location.city(),
 		email: faker.internet.email(),
 		neighborhood: faker.location.streetAddress(),
-		password: password ?? faker.internet.password(),
-		phone: phone ?? faker.phone.number(),
+		password: data?.password ?? faker.internet.password(),
+		phone: data?.phone ?? faker.phone.number(),
 		responsible: faker.person.fullName(),
 		state: faker.location.state(),
 		street: faker.location.street()
