@@ -3,13 +3,15 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 export async function refresh(request: FastifyRequest, response: FastifyReply) {
 	await request.jwtVerify({ onlyCookie: true });
 
+	const { role } = request.user;
+
 	const token = await response.jwtSign(
-		{},
+		{role},
 		{sign: {sub: request.user.sub,},},
 	);
 
 	const refreshToken = await response.jwtSign(
-		{},
+		{role},
 		{
 			sign: {
 				sub: request.user.sub,

@@ -24,10 +24,10 @@ export async function authenticate(request:FastifyRequest, response: FastifyRepl
 			password
 		});
     
-		const token = await response.jwtSign({},{sign:{sub: organization.id}});
+		const token = await response.jwtSign({role: organization.role},{sign:{sub: organization.id}});
 
 		const refreshToken = await response.jwtSign(
-			{},{
+			{role: organization.role},{
 				sign: {
 					sub: organization.id,
 					expiresIn: '7d',
