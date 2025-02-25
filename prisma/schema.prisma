@@ -42,6 +42,11 @@ model Pet {
   @@map("pets")
 }
 
+enum Role {
+  ADMIN
+  MEMBER
+}
+
 model Organization {
   id String @id @default(uuid())
 
@@ -55,8 +60,8 @@ model Organization {
   neighborhood String
   street       String
   phone        String @unique
-
-  pets Pet[]
+  role         Role   @default(MEMBER)
+  pets         Pet[]
 
   @@map("organizations")
 }
