@@ -4,9 +4,12 @@ import { makeOrganization } from 'test/factory/make-organization';
 import { makePet } from 'test/factory/make-pet';
 import { afterAll, beforeAll, beforeEach, describe, expect,it } from 'vitest';
 import { app } from '@/app';
+import { createAndAuthenticateOrganization } from '@/utils/create-and-authenticate-organization';
 import { getMaxMinDateToAge } from '@/utils/get-max-min-date-to-filter-pet-by-age';
 
 let organization: Organization;
+
+let token;
 
 describe('Register Pet (e2e)', ()=>{
 	beforeAll(async ()=>{
@@ -18,10 +21,13 @@ describe('Register Pet (e2e)', ()=>{
 	});
 	
 	beforeEach(async()=>{
+		token = await createAndAuthenticateOrganization(app);
+		
 		const createOrganizationResponse = await request(app.server)
 			.post('/organizations')
-			.send(makeOrganization({}));
-  
+			.set('Authorization', `Bearer ${token}`)
+			.send(makeOrganization());
+
 		organization = createOrganizationResponse.body.organization ;
 	});
 

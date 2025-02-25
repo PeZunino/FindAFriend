@@ -3,6 +3,7 @@ import { makeOrganization } from 'test/factory/make-organization';
 import { makePet } from 'test/factory/make-pet';
 import { afterAll, beforeAll, describe, expect,it } from 'vitest';
 import { app } from '@/app';
+import { createAndAuthenticateOrganization } from '@/utils/create-and-authenticate-organization';
 
 describe('Register Pet (e2e)', ()=>{
 	beforeAll(async ()=>{
@@ -14,10 +15,12 @@ describe('Register Pet (e2e)', ()=>{
 	});
 	
 	it('should be able to register', async()=>{
-		 
+		const { token } = await createAndAuthenticateOrganization(app);
+
 		const createOrganizationResponse = await request(app.server)
 			.post('/organizations')
-			.send(makeOrganization({}));
+			.set('Authorization', `Bearer ${token}`)
+			.send(makeOrganization());
 		
 		const {organization} = createOrganizationResponse.body;
 
