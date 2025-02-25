@@ -15,7 +15,7 @@ describe('Register Pet (e2e)', ()=>{
 	});
 	
 	it('should be able to register', async()=>{
-		const { token } = await createAndAuthenticateOrganization(app);
+		const { token } = await createAndAuthenticateOrganization(app, true);
 
 		const createOrganizationResponse = await request(app.server)
 			.post('/organizations')

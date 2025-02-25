@@ -4,10 +4,11 @@ import { makeOrganization } from 'test/factory/make-organization';
 import { prisma } from '@/lib/prisma';
 export async function createAndAuthenticateOrganization(
 	app:FastifyInstance,
+	isAdmin = false,
 ){
-	const organization = makeOrganization();
+	const organization = makeOrganization({isAdmin});
 
-	await prisma.organization.create({data: organization,});
+	await prisma.organization.create({data: organization});
 
 	const authResponse = await request(app.server)
 		.post('/sessions')

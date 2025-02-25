@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker';
+import { $Enums } from '@prisma/client';
 
 interface Organization {
 	phone?:string
 	password?:string
+	isAdmin?: boolean
 }
 
 export function makeOrganization(data?:Organization){
@@ -17,6 +19,7 @@ export function makeOrganization(data?:Organization){
 		phone: data?.phone ?? faker.phone.number(),
 		responsible: faker.person.fullName(),
 		state: faker.location.state(),
-		street: faker.location.street()
+		street: faker.location.street(),
+		role: data?.isAdmin ? 'ADMIN' : 'MEMBER' as $Enums.Role,
 	};
 }
